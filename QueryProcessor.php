@@ -50,7 +50,7 @@ class QueryProcessor extends Component
     public function process($query)
     {
         $data = $this->db->readData($query->from);
-        // filter
+        $data = $this->applyWhere($data, $query->where);
         $data = $this->applyOrderBy($data, $query->orderBy);
         $data = $this->applyLimit($data, $query->limit, $query->offset);
         return $data;

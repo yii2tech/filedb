@@ -12,7 +12,19 @@ use yii\db\QueryInterface;
 use yii\db\QueryTrait;
 
 /**
- * Query
+ * Query represents the data set search inquiry.
+ *
+ * For example,
+ *
+ * ```php
+ * $query = new Query;
+ * // compose the query
+ * $query->from('status')
+ *     ->where(['type' => 'public'])
+ *     ->limit(10);
+ * // build and execute the query
+ * $rows = $query->all();
+ * ```
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
@@ -36,7 +48,8 @@ class Query extends Component implements QueryInterface
      */
     public function all($db = null)
     {
-        // TODO: Implement all() method.
+        $rows = $this->fetchData($db);
+        return $this->populate($rows);
     }
 
     /**
@@ -48,7 +61,8 @@ class Query extends Component implements QueryInterface
      */
     public function one($db = null)
     {
-        // TODO: Implement one() method.
+        $rows = $this->fetchData($db);
+        return empty($rows) ? false : reset($rows);
     }
 
     /**
@@ -94,5 +108,29 @@ class Query extends Component implements QueryInterface
     protected function fetchData($db)
     {
         return $db->getQueryProcessor()->process($this);
+    }
+
+    /**
+     * Converts the raw query results into the format as specified by this query.
+     * This method is internally used to convert the data fetched from database
+     * into the format as required by this query.
+     * @param array $rows the raw query result from database
+     * @return array the converted query result
+     */
+    public function populate($rows)
+    {
+        if ($this->indexBy === null) {
+            return array_values($rows); // reset storage internal keys
+        }
+        $result = [];
+        foreach ($rows as $row) {
+            if (is_string($this->indexBy)) {
+                $key = $row[$this->indexBy];
+            } else {
+                $key = call_user_func($this->indexBy, $row);
+            }
+            $result[$key] = $row;
+        }
+        return $result;
     }
 }
