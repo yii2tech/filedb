@@ -110,4 +110,47 @@ class ActiveRecordTest extends TestCase
         $this->assertTrue($customers['1-1'] instanceof Customer);
         $this->assertTrue($customers['2-2'] instanceof Customer);
     }
+
+    public function testInsert()
+    {
+        $record = new Customer();
+        $record->id = 99;
+        $record->name = 'new name';
+        $record->email = 'new email';
+        $record->address = 'new address';
+        $record->statusId = 7;
+
+        $this->assertTrue($record->isNewRecord);
+
+        $record->save();
+
+        $this->assertFalse($record->isNewRecord);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testUpdate()
+    {
+        $record = new Customer;
+        $record->id = 99;
+        $record->name = 'new name';
+        $record->email = 'new email';
+        $record->address = 'new address';
+        $record->statusId = 7;
+        $record->save();
+
+        // save
+        $record = Customer::findOne($record->id);
+        $this->assertTrue($record instanceof Customer);
+        $this->assertEquals(7, $record->statusId);
+        $this->assertFalse($record->isNewRecord);
+
+        $record->statusId = 9;
+        $record->save();
+        $this->assertEquals(9, $record->statusId);
+        $this->assertFalse($record->isNewRecord);
+        $record2 = Customer::findOne($record->id);
+        $this->assertEquals(9, $record2->statusId);
+    }
 }

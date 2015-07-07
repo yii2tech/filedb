@@ -7,6 +7,7 @@
 
 namespace yii2tech\staticdb;
 
+use yii\base\InvalidConfigException;
 use yii\db\BaseActiveRecord;
 use Yii;
 use yii\helpers\StringHelper;
@@ -98,8 +99,87 @@ class ActiveRecord extends BaseActiveRecord
      */
     public function insert($runValidation = true, $attributes = null)
     {
-        // TODO: Implement insert() method.
+        if ($runValidation && !$this->validate($attributes)) {
+            return false;
+        }
+        $result = $this->insertInternal($attributes);
+
+        return $result;
     }
 
+    /**
+     * @see ActiveRecord::insert()
+     */
+    protected function insertInternal($attributes = null)
+    {
+        if (!$this->beforeSave(true)) {
+            return false;
+        }
+        $values = $this->getDirtyAttributes($attributes);
+        if (empty($values)) {
+            $currentAttributes = $this->getAttributes();
+            foreach ($this->primaryKey() as $key) {
+                if (isset($currentAttributes[$key])) {
+                    $values[$key] = $currentAttributes[$key];
+                }
+            }
+        }
 
+        $db = static::getDb();
+        $pkName = $db->primaryKeyName;
+        if (!isset($values[$pkName])) {
+            throw new InvalidConfigException("'" . get_class($this) . "::{$pkName}' must be set.");
+        }
+        $dataSetName = static::dataSetName();
+        $data = $db->readData($dataSetName);
+        if (isset($data[$values[$pkName]])) {
+            throw new InvalidConfigException("'{$pkName}' value '{$values[$pkName]}' is already taken.");
+        }
+        $data[$values[$pkName]] = $values;
+        $db->writeData($dataSetName, $data);
+
+        $changedAttributes = array_fill_keys(array_keys($values), null);
+        $this->setOldAttributes($values);
+        $this->afterSave(true, $changedAttributes);
+
+        return true;
+    }
+
+    /**
+     * @see ActiveRecord::update()
+     */
+    protected function updateInternal($attributes = null)
+    {
+        if (!$this->beforeSave(false)) {
+            return false;
+        }
+        $values = $this->getDirtyAttributes($attributes);
+        if (empty($values)) {
+            $this->afterSave(false, $values);
+            return 0;
+        }
+
+        $db = static::getDb();
+        $pkName = $db->primaryKeyName;
+        $attributes = $this->getAttributes();
+        if (!isset($attributes[$pkName])) {
+            throw new InvalidConfigException("'" . get_class($this) . "::{$pkName}' must be set.");
+        }
+        $dataSetName = static::dataSetName();
+        $data = $db->readData($dataSetName);
+        if (!isset($data[$attributes[$pkName]])) {
+            throw new InvalidConfigException("'{$pkName}' value '{$values[$pkName]}' does not exist.");
+        }
+        $data[$attributes[$pkName]] = $values;
+        $db->writeData($dataSetName, $data);
+
+        $changedAttributes = [];
+        foreach ($values as $name => $value) {
+            $changedAttributes[$name] = $this->getOldAttribute($name);
+            $this->setOldAttribute($name, $value);
+        }
+        $this->afterSave(false, $changedAttributes);
+
+        return 1;
+    }
 }
