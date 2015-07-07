@@ -7,6 +7,7 @@
 
 namespace yii2tech\staticdb;
 
+use yii\db\ActiveQueryInterface;
 use yii\db\ActiveQueryTrait;
 use yii\db\ActiveRelationTrait;
 
@@ -16,7 +17,7 @@ use yii\db\ActiveRelationTrait;
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0
  */
-class ActiveQuery extends Query
+class ActiveQuery extends Query implements ActiveQueryInterface
 {
     use ActiveQueryTrait;
     use ActiveRelationTrait;
@@ -106,6 +107,30 @@ class ActiveQuery extends Query
      */
     protected function fetchData($db)
     {
+        if ($this->primaryModel !== null) {
+            // lazy loading
+            if ($this->via instanceof self) {
+                // via pivot data set
+                $viaModels = $this->via->findJunctionRows([$this->primaryModel]);
+                $this->filterByModels($viaModels);
+            } elseif (is_array($this->via)) {
+                // via relation
+                /* @var $viaQuery ActiveQuery */
+                list($viaName, $viaQuery) = $this->via;
+                if ($viaQuery->multiple) {
+                    $viaModels = $viaQuery->all();
+                    $this->primaryModel->populateRelation($viaName, $viaModels);
+                } else {
+                    $model = $viaQuery->one();
+                    $this->primaryModel->populateRelation($viaName, $model);
+                    $viaModels = $model === null ? [] : [$model];
+                }
+                $this->filterByModels($viaModels);
+            } else {
+                $this->filterByModels([$this->primaryModel]);
+            }
+        }
+
         if ($db === null) {
             /* @var $modelClass ActiveRecord */
             $modelClass = $this->modelClass;

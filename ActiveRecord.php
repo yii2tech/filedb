@@ -74,7 +74,6 @@ class ActiveRecord extends BaseActiveRecord
         if ($attributes === null) {
             $rows = static::getDb()->readData(static::dataSetName());
             $attributes = array_keys(reset($rows));
-            $attributes = array_merge(static::primaryKey(), $attributes);
         }
         return $attributes;
     }

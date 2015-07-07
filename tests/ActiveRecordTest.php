@@ -44,7 +44,7 @@ class ActiveRecordTest extends TestCase
                 'name' => 'name' . $i,
                 'email' => 'email' . $i,
                 'address' => 'address' . $i,
-                'status' => $i,
+                'statusId' => $i,
             ];
         }
         $db->writeData('Customer', $rows);
@@ -82,13 +82,13 @@ class ActiveRecordTest extends TestCase
         $this->assertNull($customer);
 
         // find by attributes
-        $customer = Customer::find()->where(['status' => 4])->one();
+        $customer = Customer::find()->where(['statusId' => 4])->one();
         $this->assertTrue($customer instanceof Customer);
-        $this->assertEquals(4, $customer->status);
+        $this->assertEquals(4, $customer->statusId);
 
         // find count, sum, average, min, max, distinct
         $this->assertEquals(10, Customer::find()->count());
-        $this->assertEquals(1, Customer::find()->where(['status' => 2])->count());
+        $this->assertEquals(1, Customer::find()->where(['statusId' => 2])->count());
 
         // scope
         //$this->assertEquals(1, Customer::find()->activeOnly()->count());
@@ -105,7 +105,7 @@ class ActiveRecordTest extends TestCase
 
         // indexBy callable
         $customers = Customer::find()->indexBy(function ($customer) {
-            return $customer->status . '-' . $customer->status;
+            return $customer->statusId . '-' . $customer->statusId;
         })->all();
         $this->assertTrue($customers['1-1'] instanceof Customer);
         $this->assertTrue($customers['2-2'] instanceof Customer);
