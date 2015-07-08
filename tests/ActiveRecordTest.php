@@ -125,6 +125,9 @@ class ActiveRecordTest extends TestCase
         $record->save();
 
         $this->assertFalse($record->isNewRecord);
+
+        $refreshRecord = Customer::find()->where(['id' => $record->id])->one();
+        $this->assertNotEmpty($refreshRecord);
     }
 
     /**
@@ -152,5 +155,54 @@ class ActiveRecordTest extends TestCase
         $this->assertFalse($record->isNewRecord);
         $record2 = Customer::findOne($record->id);
         $this->assertEquals(9, $record2->statusId);
+
+        // updateAll
+        $pk = ['id' => $record->id];
+        $ret = Customer::updateAll(['statusId' => 55], $pk);
+        $this->assertEquals(1, $ret);
+        $record = Customer::findOne($pk);
+        $this->assertEquals(55, $record->statusId);
+    }
+
+    /**
+     * @depends testInsert
+     */
+    public function testDelete()
+    {
+        // delete
+        $record = new Customer();
+        $record->id = 81;
+        $record->name = 'new name';
+        $record->email = 'new email';
+        $record->address = 'new address';
+        $record->statusId = 7;
+        $record->save();
+
+        $record = Customer::findOne($record->id);
+        $record->delete();
+        $record = Customer::findOne($record->id);
+        $this->assertNull($record);
+
+        // deleteAll
+        $record = new Customer();
+        $record->id = 82;
+        $record->name = 'new name';
+        $record->email = 'new email';
+        $record->address = 'new address';
+        $record->statusId = 7;
+        $record->save();
+
+        $ret = Customer::deleteAll(['name' => 'new name']);
+        $this->assertEquals(1, $ret);
+        $records = Customer::find()->where(['name' => 'new name'])->all();
+        $this->assertEquals(0, count($records));
+    }
+
+    public function testUpdateAllCounters()
+    {
+        $this->assertEquals(1, Customer::updateAllCounters(['statusId' => 10], ['statusId' => 10]));
+
+        $record = Customer::findOne(['statusId' => 10]);
+        $this->assertNull($record);
     }
 }

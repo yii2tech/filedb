@@ -182,4 +182,96 @@ class ActiveRecord extends BaseActiveRecord
 
         return 1;
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function delete()
+    {
+        $result = false;
+        if ($this->beforeDelete()) {
+
+            $db = static::getDb();
+            $pkName = $db->primaryKeyName;
+            $attributes = $this->getAttributes();
+            if (!isset($attributes[$pkName])) {
+                throw new InvalidConfigException("'" . get_class($this) . "::{$pkName}' must be set.");
+            }
+            $dataSetName = static::dataSetName();
+            $data = $db->readData($dataSetName);
+            if (!isset($data[$attributes[$pkName]])) {
+                return false;
+            }
+            unset($data[$attributes[$pkName]]);
+            $db->writeData($dataSetName, $data);
+
+            $result = 1;
+
+            $this->afterDelete();
+        }
+
+        return $result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function updateAll($attributes, $condition = '')
+    {
+        $count = 0;
+        $records = static::findAll($condition);
+        foreach ($records as $record) {
+            $record->setAttributes($attributes, false);
+            if ($record->save(false)) {
+                $count++;
+            }
+        }
+        return $count;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function deleteAll($condition = null)
+    {
+        $count = 0;
+        $records = static::findAll($condition);
+        foreach ($records as $record) {
+            $count += $record->delete();
+        }
+        return $count;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public static function updateAllCounters($counters, $condition = '')
+    {
+        $count = 0;
+        $records = static::findAll($condition);
+        foreach ($records as $record) {
+            foreach ($counters as $attribute => $increment) {
+                $record->$attribute += $increment;
+            }
+            $record->save(false);
+            $count++;
+        }
+        return $count;
+    }
+
+    /**
+     * Returns a value indicating whether the given active record is the same as the current one.
+     * The comparison is made by comparing the data set names and the primary key values of the two active records.
+     * If one of the records [[isNewRecord|is new]] they are also considered not equal.
+     * @param ActiveRecord $record record to compare to
+     * @return boolean whether the two active records refer to the same row in the same data set.
+     */
+    public function equals($record)
+    {
+        if ($this->isNewRecord || $record->isNewRecord) {
+            return false;
+        }
+
+        return $this->dataSetName() === $record->dataSetName() && (string) $this->getPrimaryKey() === (string) $record->getPrimaryKey();
+    }
 }
