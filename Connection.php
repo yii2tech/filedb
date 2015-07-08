@@ -29,6 +29,21 @@ class Connection extends Component
      */
     public $path = '@app/filedb';
     /**
+     * @var string data files format.
+     * Format determines, which file manager should be used to read/write data files, using [[fileManagerMap]].
+     */
+    public $format = 'php';
+    /**
+     * @var array mapping between data file format (see [[format]]) and file manager classes.
+     * The keys of the array are format names while the values the corresponding
+     * file manager class name or configuration. Please refer to [[Yii::createObject()]] for
+     * details on how to specify a configuration.
+     */
+    public $fileManagerMap = [
+        'php' => 'yii2tech\filedb\FileManagerPhp',
+        'json' => 'yii2tech\filedb\FileManagerJson',
+    ];
+    /**
      * @var string name of the data key, which should be used as row unique id - primary key.
      * If source data holds no corresponding key, the key of the row in source array will be used as its value.
      */
@@ -47,6 +62,10 @@ class Connection extends Component
      * @var boolean whether [[queryProcessor]] has been initialized or not.
      */
     private $isQueryProcessorInitialized = false;
+    /**
+     * @var FileManager file manager instance.
+     */
+    private $_fileManager;
     /**
      * @var array read data cache.
      */
@@ -75,6 +94,25 @@ class Connection extends Component
     }
 
     /**
+     * @return FileManager file manager instance.
+     * @throws InvalidConfigException on invalid configuration.
+     */
+    public function getFileManager()
+    {
+        if (!is_object($this->_fileManager)) {
+            if (!isset($this->fileManagerMap[$this->format])) {
+                throw new InvalidConfigException("Unsupported format '{$this->format}'.");
+            }
+            $config = $this->fileManagerMap[$this->format];
+            if (!is_array($config)) {
+                $config = ['class' => $config];
+            }
+            $this->_fileManager = Yii::createObject($config);
+        }
+        return $this->_fileManager;
+    }
+
+    /**
      * Reads the data from data file.
      * @param string $name data file name.
      * @param boolean $refresh whether to reload the data even if it is found in the cache.
@@ -86,11 +124,7 @@ class Connection extends Component
         if (isset($this->dataCache[$name]) && !$refresh) {
             return $this->dataCache[$name];
         }
-        $fileName = $this->composeFullFileName($name);
-        $rawData = require $fileName;
-        if (!is_array($rawData)) {
-            throw new InvalidConfigException("File '{$fileName}' should return an array.");
-        }
+        $rawData = $this->getFileManager()->readData($this->composeFullFileName($name));
         $data = [];
         foreach ($rawData as $key => $value) {
             if (isset($value[$this->primaryKeyName])) {
@@ -115,22 +149,17 @@ class Connection extends Component
      */
     public function writeData($name, array $data)
     {
-        $fileName = $this->composeFullFileName($name);
-        $content = "<?php\n\nreturn " . VarDumper::export($data) . ";";
-        $bytesWritten = file_put_contents($fileName, $content);
-        if ($bytesWritten <= 0) {
-            throw new Exception("Unable to write file '{$fileName}'.");
-        }
+        $this->getFileManager()->writeData($this->composeFullFileName($name), $data);
         unset($this->dataCache[$name]);
     }
 
     /**
-     * Composes data file full name.
-     * @param string $name data pack name.
-     * @return string data file full name.
+     * Composes data file name with full path, but without extension.
+     * @param string $name data file self name.
+     * @return string data file name without extension.
      */
     protected function composeFullFileName($name)
     {
-        return Yii::getAlias($this->path) . DIRECTORY_SEPARATOR . $name . '.php';
+        return Yii::getAlias($this->path) . DIRECTORY_SEPARATOR . $name;
     }
 }
