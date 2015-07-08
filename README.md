@@ -5,9 +5,9 @@ This extension provides ActiveRecord interface for the data declared in static P
 
 For license information check the [LICENSE](LICENSE.md)-file.
 
-[![Latest Stable Version](https://poser.pugx.org/yii2tech/staticdb/v/stable.png)](https://packagist.org/packages/yii2tech/staticdb)
-[![Total Downloads](https://poser.pugx.org/yii2tech/staticdb/downloads.png)](https://packagist.org/packages/yii2tech/staticdb)
-[![Build Status](https://travis-ci.org/yii2tech/staticdb.svg?branch=master)](https://travis-ci.org/yii2tech/staticdb)
+[![Latest Stable Version](https://poser.pugx.org/yii2tech/filedb/v/stable.png)](https://packagist.org/packages/yii2tech/filedb)
+[![Total Downloads](https://poser.pugx.org/yii2tech/filedb/downloads.png)](https://packagist.org/packages/yii2tech/filedb)
+[![Build Status](https://travis-ci.org/yii2tech/filedb.svg?branch=master)](https://travis-ci.org/yii2tech/filedb)
 
 
 Installation
@@ -18,13 +18,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require --prefer-dist yii2tech/staticdb
+php composer.phar require --prefer-dist yii2tech/filedb
 ```
 
 or add
 
 ```json
-"yii2tech/staticdb": "*"
+"yii2tech/filedb": "*"
 ```
 
 to the require section of your composer.json.

@@ -1,9 +1,9 @@
 <?php
 
-namespace yii2tech\tests\unit\staticdb;
+namespace yii2tech\tests\unit\filedb;
 
-use yii2tech\staticdb\Connection;
-use yii2tech\staticdb\QueryProcessor;
+use yii2tech\filedb\Connection;
+use yii2tech\filedb\QueryProcessor;
 
 class QueryProcessorTest extends TestCase
 {

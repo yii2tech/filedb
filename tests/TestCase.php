@@ -1,6 +1,6 @@
 <?php
 
-namespace yii2tech\tests\unit\staticdb;
+namespace yii2tech\tests\unit\filedb;
 
 use yii\helpers\ArrayHelper;
 use Yii;
@@ -75,6 +75,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function getTestFilePath()
     {
-        return Yii::getAlias('@yii2tech/tests/unit/staticdb/runtime') . DIRECTORY_SEPARATOR . getmypid();
+        return Yii::getAlias('@yii2tech/tests/unit/filedb/runtime') . DIRECTORY_SEPARATOR . getmypid();
     }
 }

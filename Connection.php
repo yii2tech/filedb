@@ -5,7 +5,7 @@
  * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
  */
 
-namespace yii2tech\staticdb;
+namespace yii2tech\filedb;
 
 use Yii;
 use yii\base\Component;
@@ -27,7 +27,7 @@ class Connection extends Component
     /**
      * @var string path to directory, which holds data files.
      */
-    public $path = '@app/staticdb';
+    public $path = '@app/filedb';
     /**
      * @var string name of the data key, which should be used as row unique id - primary key.
      * If source data holds no corresponding key, the key of the row in source array will be used as its value.
@@ -42,7 +42,7 @@ class Connection extends Component
     /**
      * @var QueryProcessor|array|string the query processor object or its configuration.
      */
-    private $_queryProcessor = 'yii2tech\staticdb\QueryProcessor';
+    private $_queryProcessor = 'yii2tech\filedb\QueryProcessor';
     /**
      * @var boolean whether [[queryProcessor]] has been initialized or not.
      */

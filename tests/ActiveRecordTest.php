@@ -1,11 +1,11 @@
 <?php
 
-namespace yii2tech\tests\unit\staticdb;
+namespace yii2tech\tests\unit\filedb;
 
-use yii2tech\staticdb\ActiveQuery;
-use yii2tech\staticdb\Connection;
-use yii2tech\tests\unit\staticdb\data\ar\ActiveRecord;
-use yii2tech\tests\unit\staticdb\data\ar\Customer;
+use yii2tech\filedb\ActiveQuery;
+use yii2tech\filedb\Connection;
+use yii2tech\tests\unit\filedb\data\ar\ActiveRecord;
+use yii2tech\tests\unit\filedb\data\ar\Customer;
 
 class ActiveRecordTest extends TestCase
 {

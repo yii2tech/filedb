@@ -5,7 +5,7 @@
  * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
  */
 
-namespace yii2tech\staticdb;
+namespace yii2tech\filedb;
 
 use yii\base\InvalidConfigException;
 use yii\db\BaseActiveRecord;
@@ -22,13 +22,13 @@ class ActiveRecord extends BaseActiveRecord
 {
     /**
      * Returns the static DB connection used by this AR class.
-     * By default, the "staticdb" application component is used as the connection.
+     * By default, the "filedb" application component is used as the connection.
      * You may override this method if you want to use a different connection.
      * @return Connection the database connection used by this AR class.
      */
     public static function getDb()
     {
-        return Yii::$app->get('staticdb');
+        return Yii::$app->get('filedb');
     }
 
     /**

@@ -1,14 +1,14 @@
 {
-    "name": "yii2tech/staticdb",
+    "name": "yii2tech/filedb",
     "description": "Provides support for site map creation",
-    "keywords": ["yii2", "staticdb", "static", "active", "record"],
+    "keywords": ["yii2", "filedb", "static", "active", "record"],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yii2tech/staticdb/issues",
+        "issues": "https://github.com/yii2tech/filedb/issues",
         "forum": "http://www.yiiframework.com/forum/",
-        "wiki": "https://github.com/yii2tech/staticdb/wiki",
-        "source": "https://github.com/yii2tech/staticdb"
+        "wiki": "https://github.com/yii2tech/filedb/wiki",
+        "source": "https://github.com/yii2tech/filedb"
     },
     "authors": [
         {
@@ -20,7 +20,7 @@
         "yiisoft/yii2": "*"
     },
     "autoload": {
-        "psr-4": { "yii2tech\\staticdb\\": "" }
+        "psr-4": { "yii2tech\\filedb\\": "" }
     },
     "extra": {
         "branch-alias": {

@@ -5,7 +5,7 @@
  * @license [New BSD License](http://www.opensource.org/licenses/bsd-license.php)
  */
 
-namespace yii2tech\staticdb;
+namespace yii2tech\filedb;
 
 use yii\base\Component;
 use yii\db\QueryInterface;
