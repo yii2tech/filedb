@@ -12,7 +12,10 @@ use yii\base\InvalidParamException;
 use yii\helpers\ArrayHelper;
 
 /**
- * QueryProcessor
+ * QueryProcessor processes [[Query]] instances adjusting data accordingly.
+ * It applies filter conditions, sorting and limit.
+ *
+ * @see Query
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

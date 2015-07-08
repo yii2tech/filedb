@@ -15,9 +15,21 @@ use yii\di\Instance;
 use yii\helpers\VarDumper;
 
 /**
- * Connection
+ * Connection represents data file storage with particular path and format.
+ *
+ * Application configuration example:
+ *
+ * ```php
+ * return [
+ *     'components' => [
+ *         'class' => 'yii2tech\filedb\Connection',
+ *         'path' => '@app/data/static',
+ *     ],
+ * ];
+ * ```
  *
  * @property QueryProcessor|array|string $queryProcessor the query processor object or its configuration.
+ * @property FileManager $fileManager the file manager instance. This property is read-only.
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

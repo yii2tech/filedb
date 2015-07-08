@@ -13,7 +13,27 @@ use Yii;
 use yii\helpers\StringHelper;
 
 /**
- * ActiveRecord
+ * ActiveRecord is the base class for classes representing relational data in terms of objects.
+ *
+ * To declare an ActiveRecord class you need to extend [[\yii2tech\filedb\ActiveRecord]] and
+ * implement the `fileName` method:
+ *
+ * ```php
+ * <?php
+ *
+ * class Status extends \yii2tech\filedb\ActiveRecord
+ * {
+ *     public static function fileName()
+ *     {
+ *         return 'status';
+ *     }
+ * }
+ * ```
+ *
+ * Usage of ActiveRecord is similar to the regular [[\yii\db\ActiveRecord]].
+ *
+ * @method ActiveQuery hasMany($class, array $link) see [[BaseActiveRecord::hasMany()]] for more info
+ * @method ActiveQuery hasOne($class, array $link) see [[BaseActiveRecord::hasOne()]] for more info
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

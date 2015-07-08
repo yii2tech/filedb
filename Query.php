@@ -14,7 +14,7 @@ use yii\db\QueryTrait;
 /**
  * Query represents the data file search inquiry.
  *
- * For example,
+ * For example:
  *
  * ```php
  * $query = new Query;

@@ -12,7 +12,51 @@ use yii\db\ActiveQueryTrait;
 use yii\db\ActiveRelationTrait;
 
 /**
- * ActiveQuery
+ * ActiveQuery represents a data file search query associated with an Active Record class.
+ *
+ * An ActiveQuery can be a normal query or be used in a relational context.
+ *
+ * ActiveQuery instances are usually created by [[ActiveRecord::find()]] and [[ActiveRecord::findBySql()]].
+ * Relational queries are created by [[ActiveRecord::hasOne()]] and [[ActiveRecord::hasMany()]].
+ *
+ * Normal Query
+ * ------------
+ *
+ * ActiveQuery mainly provides the following methods to retrieve the query results:
+ *
+ * - [[one()]]: returns a single record populated with the first row of data.
+ * - [[all()]]: returns all records based on the query results.
+ * - [[count()]]: returns the number of records.
+ * - [[exists()]]: returns a value indicating whether the query result has data or not.
+ *
+ * Because ActiveQuery extends from [[Query]], one can use query methods, such as [[where()]],
+ * [[orderBy()]] to customize the query options.
+ *
+ * ActiveQuery also provides the following additional query options:
+ *
+ * - [[with()]]: list of relations that this query should be performed with.
+ * - [[indexBy()]]: the name of the column by which the query result should be indexed.
+ * - [[asArray()]]: whether to return each record as an array.
+ *
+ * These options can be configured using methods of the same name. For example:
+ *
+ * ```php
+ * $statuses = Status::find()->with('tags')->asArray()->all();
+ * ```
+ *
+ * Relational query
+ * ----------------
+ *
+ * In relational context ActiveQuery represents a relation between two Active Record classes.
+ *
+ * Relational ActiveQuery instances are usually created by calling [[ActiveRecord::hasOne()]] and
+ * [[ActiveRecord::hasMany()]]. An Active Record class declares a relation by defining
+ * a getter method which calls one of the above methods and returns the created ActiveQuery object.
+ *
+ * A relation is specified by [[link]] which represents the association between columns
+ * of different tables; and the multiplicity of the relation is indicated by [[multiple]].
+ *
+ * @see ActiveRecord
  *
  * @author Paul Klimov <klimov.paul@gmail.com>
  * @since 1.0

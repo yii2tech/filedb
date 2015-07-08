@@ -3,6 +3,8 @@
 namespace yii2tech\tests\unit\filedb;
 
 use yii2tech\filedb\Connection;
+use yii2tech\filedb\FileManagerJson;
+use yii2tech\filedb\FileManagerPhp;
 use yii2tech\filedb\QueryProcessor;
 
 class ConnectionTest extends TestCase
@@ -19,6 +21,19 @@ class ConnectionTest extends TestCase
         $defaultQueryProcessor = $db->getQueryProcessor();
         $this->assertTrue($defaultQueryProcessor instanceof QueryProcessor);
         $this->assertSame($db, $defaultQueryProcessor->db);
+    }
+
+    public function testGetFileManager()
+    {
+        $db = new Connection();
+        $db->format = 'php';
+        $fileManager = $db->getFileManager();
+        $this->assertTrue($fileManager instanceof FileManagerPhp);
+
+        $db = new Connection();
+        $db->format = 'json';
+        $fileManager = $db->getFileManager();
+        $this->assertTrue($fileManager instanceof FileManagerJson);
     }
 
     public function testReadData()
