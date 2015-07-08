@@ -56,12 +56,12 @@ class ActiveRecord extends BaseActiveRecord
     }
 
     /**
-     * Declares the name of the static data set associated with this AR class.
-     * By default this method returns the class name as the data set name.
+     * Declares the name of the data file associated with this AR class.
+     * By default this method returns the class name as the data file name.
      * You may override this method if the collection is not named after this convention.
      * @return string|array the collection name.
      */
-    public static function dataSetName()
+    public static function fileName()
     {
         return StringHelper::basename(get_called_class());
     }
@@ -73,7 +73,7 @@ class ActiveRecord extends BaseActiveRecord
     {
         static $attributes;
         if ($attributes === null) {
-            $rows = static::getDb()->readData(static::dataSetName());
+            $rows = static::getDb()->readData(static::fileName());
             $attributes = array_keys(reset($rows));
         }
         return $attributes;
@@ -130,13 +130,13 @@ class ActiveRecord extends BaseActiveRecord
         if (!isset($values[$pkName])) {
             throw new InvalidConfigException("'" . get_class($this) . "::{$pkName}' must be set.");
         }
-        $dataSetName = static::dataSetName();
-        $data = $db->readData($dataSetName);
+        $dataFileName = static::fileName();
+        $data = $db->readData($dataFileName);
         if (isset($data[$values[$pkName]])) {
             throw new InvalidConfigException("'{$pkName}' value '{$values[$pkName]}' is already taken.");
         }
         $data[$values[$pkName]] = $values;
-        $db->writeData($dataSetName, $data);
+        $db->writeData($dataFileName, $data);
 
         $changedAttributes = array_fill_keys(array_keys($values), null);
         $this->setOldAttributes($values);
@@ -165,13 +165,13 @@ class ActiveRecord extends BaseActiveRecord
         if (!isset($attributes[$pkName])) {
             throw new InvalidConfigException("'" . get_class($this) . "::{$pkName}' must be set.");
         }
-        $dataSetName = static::dataSetName();
-        $data = $db->readData($dataSetName);
+        $dataFileName = static::fileName();
+        $data = $db->readData($dataFileName);
         if (!isset($data[$attributes[$pkName]])) {
             throw new InvalidConfigException("'{$pkName}' value '{$values[$pkName]}' does not exist.");
         }
         $data[$attributes[$pkName]] = $values;
-        $db->writeData($dataSetName, $data);
+        $db->writeData($dataFileName, $data);
 
         $changedAttributes = [];
         foreach ($values as $name => $value) {
@@ -197,13 +197,13 @@ class ActiveRecord extends BaseActiveRecord
             if (!isset($attributes[$pkName])) {
                 throw new InvalidConfigException("'" . get_class($this) . "::{$pkName}' must be set.");
             }
-            $dataSetName = static::dataSetName();
-            $data = $db->readData($dataSetName);
+            $dataFileName = static::fileName();
+            $data = $db->readData($dataFileName);
             if (!isset($data[$attributes[$pkName]])) {
                 return false;
             }
             unset($data[$attributes[$pkName]]);
-            $db->writeData($dataSetName, $data);
+            $db->writeData($dataFileName, $data);
 
             $result = 1;
 
@@ -261,10 +261,10 @@ class ActiveRecord extends BaseActiveRecord
 
     /**
      * Returns a value indicating whether the given active record is the same as the current one.
-     * The comparison is made by comparing the data set names and the primary key values of the two active records.
+     * The comparison is made by comparing the data file names and the primary key values of the two active records.
      * If one of the records [[isNewRecord|is new]] they are also considered not equal.
      * @param ActiveRecord $record record to compare to
-     * @return boolean whether the two active records refer to the same row in the same data set.
+     * @return boolean whether the two active records refer to the same row in the same data file.
      */
     public function equals($record)
     {
@@ -272,6 +272,6 @@ class ActiveRecord extends BaseActiveRecord
             return false;
         }
 
-        return $this->dataSetName() === $record->dataSetName() && (string) $this->getPrimaryKey() === (string) $record->getPrimaryKey();
+        return $this->fileName() === $record->fileName() && (string) $this->getPrimaryKey() === (string) $record->getPrimaryKey();
     }
 }

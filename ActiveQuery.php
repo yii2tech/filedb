@@ -110,7 +110,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
         if ($this->primaryModel !== null) {
             // lazy loading
             if ($this->via instanceof self) {
-                // via pivot data set
+                // via pivot data file
                 $viaModels = $this->via->findJunctionRows([$this->primaryModel]);
                 $this->filterByModels($viaModels);
             } elseif (is_array($this->via)) {
@@ -140,7 +140,7 @@ class ActiveQuery extends Query implements ActiveQueryInterface
         if (empty($this->from)) {
             /* @var $modelClass ActiveRecord */
             $modelClass = $this->modelClass;
-            $this->from = $modelClass::dataSetName();
+            $this->from = $modelClass::fileName();
         }
 
         return $db->getQueryProcessor()->process($this);

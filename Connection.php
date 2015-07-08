@@ -76,7 +76,7 @@ class Connection extends Component
 
     /**
      * Reads the data from data file.
-     * @param string $name data set name.
+     * @param string $name data file name.
      * @param boolean $refresh whether to reload the data even if it is found in the cache.
      * @return array[] data.
      * @throws InvalidConfigException on failure.
@@ -109,7 +109,7 @@ class Connection extends Component
 
     /**
      * Writes data into data file.
-     * @param string $name data set name.
+     * @param string $name data file name.
      * @param array[] $data data to be written.
      * @throws Exception on failure.
      */

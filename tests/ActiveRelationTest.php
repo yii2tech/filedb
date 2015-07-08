@@ -41,7 +41,7 @@ class ActiveRelationTest extends TestCase
                 'rating' => $i,
             ];
         }
-        $db->writeData(Status::dataSetName(), $statuses);
+        $db->writeData(Status::fileName(), $statuses);
 
         $customers = [];
         for ($i = 1; $i <= 10; $i++) {
@@ -53,7 +53,7 @@ class ActiveRelationTest extends TestCase
                 'statusId' => ($i % 5) + 1,
             ];
         }
-        $db->writeData(Customer::dataSetName(), $customers);
+        $db->writeData(Customer::fileName(), $customers);
     }
 
     // Tests :

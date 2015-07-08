@@ -12,7 +12,7 @@ use yii\db\QueryInterface;
 use yii\db\QueryTrait;
 
 /**
- * Query represents the data set search inquiry.
+ * Query represents the data file search inquiry.
  *
  * For example,
  *
@@ -34,7 +34,7 @@ class Query extends Component implements QueryInterface
     use QueryTrait;
 
     /**
-     * @var string data set name to be selected from.
+     * @var string data file name to be selected from.
      * @see from()
      */
     public $from;
@@ -91,8 +91,8 @@ class Query extends Component implements QueryInterface
     }
 
     /**
-     * Sets data set name to be selected from.
-     * @param string $name data set name.
+     * Sets data file name to be selected from.
+     * @param string $name data file name.
      * @return $this the query object itself
      */
     public function from($name)
