@@ -22,8 +22,10 @@ use yii\helpers\VarDumper;
  * ```php
  * return [
  *     'components' => [
- *         'class' => 'yii2tech\filedb\Connection',
- *         'path' => '@app/data/static',
+ *         'filedb' => [
+ *             'class' => 'yii2tech\filedb\Connection',
+ *             'path' => '@app/data/static',
+ *         ]
  *     ],
  * ];
  * ```

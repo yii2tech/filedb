@@ -17,7 +17,7 @@ use yii\db\QueryTrait;
  * For example:
  *
  * ```php
- * $query = new Query;
+ * $query = new Query();
  * // compose the query
  * $query->from('status')
  *     ->where(['type' => 'public'])
