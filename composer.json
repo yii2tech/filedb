@@ -1,6 +1,6 @@
 {
     "name": "yii2tech/filedb",
-    "description": "Provides support for site map creation",
+    "description": "Provides ActiveRecord interface for data declared in static files",
     "keywords": ["yii2", "filedb", "static", "active", "record"],
     "type": "yii2-extension",
     "license": "BSD-3-Clause",
