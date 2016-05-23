@@ -198,6 +198,7 @@ class ActiveRecord extends BaseActiveRecord
             $this->setOldAttribute($name, $value);
         }
         $db->writeData($dataFileName, $data);
+
         $this->afterSave(false, $changedAttributes);
 
         return 1;

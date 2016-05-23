@@ -155,7 +155,7 @@ class ActiveRecordTest extends TestCase
         $this->assertFalse($record->isNewRecord);
         $record2 = Customer::findOne($record->id);
         $this->assertEquals(9, $record2->statusId);
-        $this->assertEquals($record->attributes, $record2->attributes);
+        $this->assertEquals('new name', $record2->name); // @see https://github.com/yii2tech/filedb/pull/2
 
         // updateAll
         $pk = ['id' => $record->id];
