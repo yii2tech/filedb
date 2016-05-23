@@ -190,14 +190,14 @@ class ActiveRecord extends BaseActiveRecord
         if (!isset($data[$attributes[$pkName]])) {
             throw new InvalidConfigException("'{$pkName}' value '{$values[$pkName]}' does not exist.");
         }
-        $data[$attributes[$pkName]] = $values;
-        $db->writeData($dataFileName, $data);
 
         $changedAttributes = [];
         foreach ($values as $name => $value) {
+            $data[$attributes[$pkName]][$name] = $value;
             $changedAttributes[$name] = $this->getOldAttribute($name);
             $this->setOldAttribute($name, $value);
         }
+        $db->writeData($dataFileName, $data);
         $this->afterSave(false, $changedAttributes);
 
         return 1;
