@@ -165,15 +165,20 @@ class Connection extends Component
     {
         $this->getFileManager()->writeData($this->composeFullFileName($name), $data);
         unset($this->dataCache[$name]);
+        if (ini_get('opcache.enable') == '1') {
+            opcache_invalidate($this->composeFullFileName($name, true), true);
+        }
     }
 
     /**
      * Composes data file name with full path, but without extension.
      * @param string $name data file self name.
+     * @param bool $withExtension whether to return the file name with extension.
      * @return string data file name without extension.
      */
-    protected function composeFullFileName($name)
+    protected function composeFullFileName($name, $withExtension = false)
     {
-        return Yii::getAlias($this->path) . DIRECTORY_SEPARATOR . $name;
+        return Yii::getAlias($this->path). DIRECTORY_SEPARATOR . $name
+            . ($withExtension === true ? '.' . $this->getFileManager()->fileExtension : '');
     }
 }
