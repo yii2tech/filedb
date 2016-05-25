@@ -58,6 +58,7 @@ class FileManagerPhp extends FileManager
     /**
      * Invalidates precompiled script cache (such as OPCache or APC) for the given file.
      * @param string $fileName file name.
+     * @since 1.0.1
      */
     protected function invalidateScriptCache($fileName)
     {
