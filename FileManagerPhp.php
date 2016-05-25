@@ -52,5 +52,20 @@ class FileManagerPhp extends FileManager
         if ($bytesWritten <= 0) {
             throw new Exception("Unable to write file '{$fileName}'.");
         }
+        $this->invalidateScriptCache($fileName);
+    }
+
+    /**
+     * Invalidates precompiled script cache (such as OPCache or APC) for the given file.
+     * @param string $fileName file name.
+     */
+    protected function invalidateScriptCache($fileName)
+    {
+        if (function_exists('opcache_invalidate')) {
+            opcache_invalidate($fileName, true);
+        }
+        if (function_exists('apc_delete_file')) {
+            @apc_delete_file($fileName);
+        }
     }
 }
