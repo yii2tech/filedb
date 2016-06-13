@@ -7,6 +7,7 @@
 
 namespace yii2tech\filedb;
 
+use Yii;
 use yii\base\Component;
 use yii\db\QueryInterface;
 use yii\db\QueryTrait;
@@ -102,11 +103,17 @@ class Query extends Component implements QueryInterface
     }
 
     /**
-     * @param Connection $db
-     * @return array[]
+     * Fetches data from storage.
+     * @param Connection|null $db connection to be used for data fetching.
+     * If this parameter is not given, the `filedb` application component will be used.
+     * @return array[] fetched data.
      */
     protected function fetchData($db)
     {
+        if ($db === null) {
+            $db = Yii::$app->get('filedb');
+        }
+
         return $db->getQueryProcessor()->process($this);
     }
 
