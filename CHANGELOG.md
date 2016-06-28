@@ -1,8 +1,8 @@
 Yii 2 File DB extension Change Log
 ==================================
 
-1.0.2 under development
------------------------
+1.0.2, June 28, 2016
+--------------------
 
 - Bug #4: Fixed `Query` unable to fetch default connection component for data fetching (klimov-paul)
 
