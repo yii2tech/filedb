@@ -307,7 +307,7 @@ class QueryProcessor extends Component
             return array_filter($data, function($row) use ($column, $values) {
                 $columnValue = $row[$column];
                 if (is_array($columnValue)) {
-                    return empty(array_intersect($values, $columnValue));
+                    return array_intersect($values, $columnValue) === [];
                 }
                 return !in_array($columnValue, $values);
             });
@@ -316,7 +316,7 @@ class QueryProcessor extends Component
         return array_filter($data, function($row) use ($column, $values) {
             $columnValue = $row[$column];
             if (is_array($columnValue)) {
-                return !empty(array_intersect($values, $columnValue));
+                return array_intersect($values, $columnValue) !== [];
             }
             return in_array($columnValue, $values);
         });
