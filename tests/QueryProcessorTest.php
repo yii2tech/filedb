@@ -249,4 +249,38 @@ class QueryProcessorTest extends TestCase
         $data = $queryProcessor->filterInCondition($rawData, 'NOT IN', ['tags', 'tag2']);
         $this->assertEquals([3 => ['tags' => ['tag4', 'tag5']]], $data);
     }
+
+    public function testFilterCallbackCondition()
+    {
+        $queryProcessor = new QueryProcessor();
+
+        $rawData = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $rawData[$i] = [
+                'number' => $i,
+            ];
+        }
+
+        $data = $queryProcessor->filterCallbackCondition($rawData, 'CALLBACK', [function ($row) {
+            return $row['number'] == 5;
+        }]);
+        $this->assertEquals([5 => ['number' => 5]], $data);
+    }
+
+    public function testFilterHashConditionCallback()
+    {
+        $queryProcessor = new QueryProcessor();
+
+        $rawData = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $rawData[$i] = [
+                'number' => $i
+            ];
+        }
+
+        $data = $queryProcessor->filterHashCondition($rawData, ['number' => function ($value) {
+            return $value == 5;
+        }]);
+        $this->assertEquals([5 => ['number' => 5]], $data);
+    }
 }

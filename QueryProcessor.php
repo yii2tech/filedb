@@ -43,6 +43,7 @@ class QueryProcessor extends Component
         'NOT LIKE' => 'filterLikeCondition',
         'OR LIKE' => 'filterLikeCondition',
         'OR NOT LIKE' => 'filterLikeCondition',
+        'CALLBACK' => 'filterCallbackCondition',
     ];
 
 
@@ -149,6 +150,9 @@ class QueryProcessor extends Component
                 $data = $this->filterInCondition($data, 'IN', [$column, $value]);
             } else {
                 $data = array_filter($data, function($row) use ($column, $value) {
+                    if ($value instanceof \Closure) {
+                        return call_user_func($value, $row[$column]);
+                    }
                     return ($row[$column] == $value);
                 });
             }
@@ -391,5 +395,31 @@ class QueryProcessor extends Component
             }
             return true;
         });
+    }
+
+    /**
+     * Applies 'CALLBACK' condition.
+     * @param array $data data to be filtered.
+     * @param string $operator operator.
+     * @param array $operands the only one operand is the PHP callback, which should be compatible with
+     * `array_filter()` PHP function, e.g.:
+     *
+     * ```php
+     * function ($row) {
+     *     //return bool whether row matches condition or not
+     * }
+     * ```
+     *
+     * @return array filtered data.
+     * @throws InvalidParamException if wrong number of operands have been given.
+     * @since 1.0.3
+     */
+    public function filterCallbackCondition(array $data, $operator, $operands)
+    {
+        if (count($operands) != 1) {
+            throw new InvalidParamException("Operator '$operator' requires exactly one operand.");
+        }
+        $callback = reset($operands);
+        return array_filter($data, $callback);
     }
 }
