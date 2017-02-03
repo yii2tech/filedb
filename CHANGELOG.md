@@ -1,6 +1,12 @@
 Yii 2 File DB extension Change Log
 ==================================
 
+1.0.3 under development
+-----------------------
+
+- Enh #5: `QueryProcessor::filterInCondition()` advanced allowing comparison against array-type columns (klimov-paul)
+
+
 1.0.2, June 28, 2016
 --------------------
 

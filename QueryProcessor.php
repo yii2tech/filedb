@@ -301,12 +301,20 @@ class QueryProcessor extends Component
 
         if (strncmp('NOT', $operator, 3) === 0) {
             return array_filter($data, function($row) use ($column, $values) {
-                return !in_array($row[$column], $values);
+                $columnValue = $row[$column];
+                if (is_array($columnValue)) {
+                    return empty(array_intersect($values, $columnValue));
+                }
+                return !in_array($columnValue, $values);
             });
         }
 
         return array_filter($data, function($row) use ($column, $values) {
-            return in_array($row[$column], $values);
+            $columnValue = $row[$column];
+            if (is_array($columnValue)) {
+                return !empty(array_intersect($values, $columnValue));
+            }
+            return in_array($columnValue, $values);
         });
     }
 

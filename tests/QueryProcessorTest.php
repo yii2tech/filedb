@@ -223,4 +223,30 @@ class QueryProcessorTest extends TestCase
         unset($expectedData[3]);
         $this->assertEquals($expectedData, $data);
     }
+
+    /**
+     * @depends testFilterInCondition
+     */
+    public function testFilterInConditionArrayField()
+    {
+        $queryProcessor = new QueryProcessor();
+
+        $rawData = [
+            1 => [
+                'tags' => ['tag1', 'tag2'],
+            ],
+            2 => [
+                'tags' => ['tag2', 'tag3'],
+            ],
+            3 => [
+                'tags' => ['tag4', 'tag5'],
+            ],
+        ];
+
+        $data = $queryProcessor->filterInCondition($rawData, 'IN', ['tags', 'tag3']);
+        $this->assertEquals([2 => ['tags' => ['tag2', 'tag3']]], $data);
+
+        $data = $queryProcessor->filterInCondition($rawData, 'NOT IN', ['tags', 'tag2']);
+        $this->assertEquals([3 => ['tags' => ['tag4', 'tag5']]], $data);
+    }
 }
