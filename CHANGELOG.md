@@ -1,7 +1,7 @@
 Yii 2 File DB extension Change Log
 ==================================
 
-1.0.3 under development
+1.0.3, February 6, 2017
 -----------------------
 
 - Enh: `QueryProcessor::filterHashCondition()` allows to specify filter value as `\Closure` instance (klimov-paul)
