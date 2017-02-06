@@ -253,7 +253,7 @@ class ActiveRecord extends BaseActiveRecord
     /**
      * @inheritdoc
      */
-    public static function deleteAll($condition = null)
+    public static function deleteAll($condition = null, , $params = [])
     {
         $count = 0;
         $records = static::findAll($condition);
