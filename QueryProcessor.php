@@ -422,4 +422,47 @@ class QueryProcessor extends Component
         $callback = reset($operands);
         return array_filter($data, $callback);
     }
+
+    /**
+     * Applies comparison condition, e.g. `column operator value`.
+     * @param array $data data to be filtered.
+     * @param string $operator operator.
+     * @param array $operands
+     * @return array filtered data.
+     * @throws InvalidParamException if wrong number of operands have been given or operator is not supported.
+     * @since 1.0.4
+     */
+    public function filterSimpleCondition(array $data, $operator, $operands)
+    {
+        if (count($operands) !== 2) {
+            throw new InvalidParamException("Operator '$operator' requires two operands.");
+        }
+
+        list($column, $value) = $operands;
+
+        return array_filter($data, function($row) use ($operator, $column, $value) {
+            switch ($operator) {
+                case '=':
+                case '==':
+                    return $row[$column] == $value;
+                case '===':
+                    return $row[$column] === $value;
+                case '!=':
+                case '<>':
+                    return $row[$column] != $value;
+                case '!==':
+                    return $row[$column] !== $value;
+                case '>':
+                    return $row[$column] > $value;
+                case '<':
+                    return $row[$column] < $value;
+                case '>=':
+                    return $row[$column] >= $value;
+                case '<=':
+                    return $row[$column] <= $value;
+                default:
+                    throw new InvalidParamException("Operator '$operator' is not supported.");
+            }
+        });
+    }
 }

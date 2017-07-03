@@ -189,4 +189,24 @@ class QueryTest extends TestCase
             ->all($connection);
         $this->assertEquals(9, count($rows));
     }
+
+    public function testCompareCondition()
+    {
+        $connection = $this->getConnection();
+
+        $query = new Query();
+        $rows = $query->from('customer')
+            ->where(['>', 'status', 5])
+            ->all($connection);
+        $this->assertEquals(5, count($rows));
+
+        $query = new Query();
+        $rows = $query->from('customer')
+            ->andWhere(['>=', 'status', 5])
+            ->andWhere(['<=', 'status', 6])
+            ->all($connection);
+        $this->assertEquals(2, count($rows));
+        $this->assertEquals(5, $rows[0]['status']);
+        $this->assertEquals(6, $rows[1]['status']);
+    }
 }
