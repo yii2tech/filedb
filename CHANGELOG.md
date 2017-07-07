@@ -1,8 +1,8 @@
 Yii 2 File DB extension Change Log
 ==================================
 
-1.0.4 under development
------------------------
+1.0.4, July 7, 2017
+-------------------
 
 - Bug #8: Fixed `QueryProcessor` is unable to process comparison condition, e.g. `column operator value` (klimov-paul)
 
