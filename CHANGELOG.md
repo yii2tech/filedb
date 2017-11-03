@@ -1,7 +1,7 @@
 Yii 2 File DB extension Change Log
 ==================================
 
-1.0.5 under development
+1.0.5, November 3, 2017
 -----------------------
 
 - Bug: Fixed `count()` usage at `QueryProcessor::filterInCondition()` for compatibility with PHP 7.2 (klimov-paul)
