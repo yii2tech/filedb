@@ -5,11 +5,11 @@ namespace yii2tech\tests\unit\filedb\data\ar;
 /**
  * Customer
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $email
  * @property string $address
- * @property integer $statusId
+ * @property int $statusId
  */
 class Customer extends ActiveRecord
 {

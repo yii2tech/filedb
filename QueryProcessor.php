@@ -77,8 +77,8 @@ class QueryProcessor extends Component
     /**
      * Applies limit and offset for given data.
      * @param array $data raw data.
-     * @param integer|null $limit limit value.
-     * @param integer|null $offset offset value.
+     * @param int|null $limit limit value.
+     * @param int|null $offset offset value.
      * @return array data.
      */
     public function applyLimit(array $data, $limit, $offset)

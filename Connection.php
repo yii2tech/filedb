@@ -63,7 +63,7 @@ class Connection extends Component
      */
     public $primaryKeyName = 'id';
     /**
-     * @var boolean whether to cache read data in memory.
+     * @var bool whether to cache read data in memory.
      * While enabled this option may speed up program execution, but will cost extra memory usage.
      */
     public $enableDataCache = true;
@@ -73,7 +73,7 @@ class Connection extends Component
      */
     private $_queryProcessor = 'yii2tech\filedb\QueryProcessor';
     /**
-     * @var boolean whether [[queryProcessor]] has been initialized or not.
+     * @var bool whether [[queryProcessor]] has been initialized or not.
      */
     private $isQueryProcessorInitialized = false;
     /**
@@ -129,7 +129,7 @@ class Connection extends Component
     /**
      * Reads the data from data file.
      * @param string $name data file name.
-     * @param boolean $refresh whether to reload the data even if it is found in the cache.
+     * @param bool $refresh whether to reload the data even if it is found in the cache.
      * @return array[] data.
      * @throws InvalidConfigException on failure.
      */

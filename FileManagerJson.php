@@ -26,7 +26,7 @@ class FileManagerJson extends FileManager
 
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function readData($fileName)
     {
@@ -39,7 +39,7 @@ class FileManagerJson extends FileManager
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function writeData($fileName, array $data)
     {

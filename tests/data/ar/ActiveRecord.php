@@ -7,7 +7,7 @@ class ActiveRecord extends \yii2tech\filedb\ActiveRecord
     public static $db;
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public static function getDb()
     {
