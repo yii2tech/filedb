@@ -11,6 +11,7 @@ use Yii;
 use yii\base\Component;
 use yii\db\QueryInterface;
 use yii\db\QueryTrait;
+use yii\helpers\ArrayHelper;
 
 /**
  * Query represents the data file search inquiry.
@@ -131,12 +132,7 @@ class Query extends Component implements QueryInterface
         }
         $result = [];
         foreach ($rows as $row) {
-            if (is_string($this->indexBy)) {
-                $key = $row[$this->indexBy];
-            } else {
-                $key = call_user_func($this->indexBy, $row);
-            }
-            $result[$key] = $row;
+            $result[ArrayHelper::getValue($row, $this->indexBy)] = $row;
         }
         return $result;
     }
