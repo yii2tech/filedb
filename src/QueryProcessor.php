@@ -8,7 +8,7 @@
 namespace yii2tech\filedb;
 
 use yii\base\Component;
-use yii\base\InvalidParamException;
+use yii\base\InvalidArgumentException;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -111,7 +111,7 @@ class QueryProcessor extends Component
      * @param array $data data to be filtered.
      * @param array $condition filter condition.
      * @return array filtered data.
-     * @throws InvalidParamException
+     * @throws InvalidArgumentException
      */
     public function filterCondition(array $data, $condition)
     {
@@ -119,7 +119,7 @@ class QueryProcessor extends Component
             return $data;
         }
         if (!is_array($condition)) {
-            throw new InvalidParamException('Condition must be an array');
+            throw new InvalidArgumentException('Condition must be an array');
         }
 
         if (isset($condition[0])) { // operator format: operator, operand 1, operand 2, ...
@@ -211,12 +211,12 @@ class QueryProcessor extends Component
      * @param string $operator operator.
      * @param array $operands operands to be inverted.
      * @return array filtered data.
-     * @throws InvalidParamException if wrong number of operands have been given.
+     * @throws InvalidArgumentException if wrong number of operands have been given.
      */
     public function filterNotCondition(array $data, $operator, $operands)
     {
         if (count($operands) != 1) {
-            throw new InvalidParamException("Operator '$operator' requires exactly one operand.");
+            throw new InvalidArgumentException("Operator '$operator' requires exactly one operand.");
         }
 
         $operand = reset($operands);
@@ -246,15 +246,15 @@ class QueryProcessor extends Component
      * @param array $operands the first operand is the column name. The second and third operands
      * describe the interval that column value should be in.
      * @return array filtered data.
-     * @throws InvalidParamException if wrong number of operands have been given.
+     * @throws InvalidArgumentException if wrong number of operands have been given.
      */
     public function filterBetweenCondition(array $data, $operator, $operands)
     {
         if (!isset($operands[0], $operands[1], $operands[2])) {
-            throw new InvalidParamException("Operator '$operator' requires three operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires three operands.");
         }
 
-        list($column, $value1, $value2) = $operands;
+        [$column, $value1, $value2] = $operands;
 
         if (strncmp('NOT', $operator, 3) === 0) {
             return array_filter($data, function($row) use ($column, $value1, $value2) {
@@ -274,15 +274,15 @@ class QueryProcessor extends Component
      * @param array $operands the first operand is the column name.
      * The second operand is an array of values that column value should be among.
      * @return array filtered data.
-     * @throws InvalidParamException if wrong number of operands have been given.
+     * @throws InvalidArgumentException if wrong number of operands have been given.
      */
     public function filterInCondition(array $data, $operator, $operands)
     {
         if (!isset($operands[0], $operands[1])) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
         }
 
-        list($column, $values) = $operands;
+        [$column, $values] = $operands;
 
         if ($values === [] || $column === []) {
             return $operator === 'IN' ? [] : $data;
@@ -292,7 +292,7 @@ class QueryProcessor extends Component
 
         if (is_array($column)) {
             if (count($column) > 1) {
-                throw new InvalidParamException("Operator '$operator' allows only a single column.");
+                throw new InvalidArgumentException("Operator '$operator' allows only a single column.");
             }
             $column = reset($column);
         }
@@ -328,15 +328,15 @@ class QueryProcessor extends Component
      * @param array $operands the first operand is the column name. The second operand is a single value
      * or an array of values that column value should be compared with.
      * @return array filtered data.
-     * @throws InvalidParamException if wrong number of operands have been given.
+     * @throws InvalidArgumentException if wrong number of operands have been given.
      */
     public function filterLikeCondition(array $data, $operator, $operands)
     {
         if (!isset($operands[0], $operands[1])) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
         }
 
-        list($column, $values) = $operands;
+        [$column, $values] = $operands;
 
         if (!is_array($values)) {
             $values = [$values];
@@ -410,13 +410,13 @@ class QueryProcessor extends Component
      * ```
      *
      * @return array filtered data.
-     * @throws InvalidParamException if wrong number of operands have been given.
+     * @throws InvalidArgumentException if wrong number of operands have been given.
      * @since 1.0.3
      */
     public function filterCallbackCondition(array $data, $operator, $operands)
     {
         if (count($operands) != 1) {
-            throw new InvalidParamException("Operator '$operator' requires exactly one operand.");
+            throw new InvalidArgumentException("Operator '$operator' requires exactly one operand.");
         }
         $callback = reset($operands);
         return array_filter($data, $callback);
@@ -428,16 +428,16 @@ class QueryProcessor extends Component
      * @param string $operator operator.
      * @param array $operands
      * @return array filtered data.
-     * @throws InvalidParamException if wrong number of operands have been given or operator is not supported.
+     * @throws InvalidArgumentException if wrong number of operands have been given or operator is not supported.
      * @since 1.0.4
      */
     public function filterSimpleCondition(array $data, $operator, $operands)
     {
         if (count($operands) !== 2) {
-            throw new InvalidParamException("Operator '$operator' requires two operands.");
+            throw new InvalidArgumentException("Operator '$operator' requires two operands.");
         }
 
-        list($column, $value) = $operands;
+        [$column, $value] = $operands;
 
         return array_filter($data, function($row) use ($operator, $column, $value) {
             switch ($operator) {
@@ -460,7 +460,7 @@ class QueryProcessor extends Component
                 case '<=':
                     return $row[$column] <= $value;
                 default:
-                    throw new InvalidParamException("Operator '$operator' is not supported.");
+                    throw new InvalidArgumentException("Operator '$operator' is not supported.");
             }
         });
     }

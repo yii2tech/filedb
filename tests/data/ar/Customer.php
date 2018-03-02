@@ -15,6 +15,6 @@ class Customer extends ActiveRecord
 {
     public function getStatus()
     {
-        return $this->hasOne(Status::className(), ['id' => 'statusId']);
+        return $this->hasOne(Status::class, ['id' => 'statusId']);
     }
 }

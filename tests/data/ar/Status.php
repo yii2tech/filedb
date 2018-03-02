@@ -6,6 +6,6 @@ class Status extends ActiveRecord
 {
     public function getCustomers()
     {
-        return $this->hasMany(Customer::className(), ['statusId' => 'id']);
+        return $this->hasMany(Customer::class, ['statusId' => 'id']);
     }
 }

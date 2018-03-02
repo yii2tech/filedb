@@ -50,7 +50,7 @@ First of all you should add a [[\yii2tech\filedb\Connection]] component to your 
 return [
     'components' => [
         'filedb' => [
-            'class' => 'yii2tech\filedb\Connection',
+            '__class' => yii2tech\filedb\Connection::class,
             'path' => '@app/data/static',
         ],
         // ...
@@ -151,7 +151,7 @@ class UserGroup extends \yii2tech\filedb\ActiveRecord
 {
     public function getUsers()
     {
-        return $this->hasMany(User::className(), ['groupId' => 'id']);
+        return $this->hasMany(User::class, ['groupId' => 'id']);
     }
 }
 
@@ -159,7 +159,7 @@ class User extends \yii\db\ActiveRecord
 {
     public function getGroup()
     {
-        return $this->hasOne(UserGroup::className(), ['id' => 'groupId']);
+        return $this->hasOne(UserGroup::class, ['id' => 'groupId']);
     }
 }
 ```

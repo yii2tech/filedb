@@ -23,7 +23,7 @@ use yii\helpers\VarDumper;
  * return [
  *     'components' => [
  *         'filedb' => [
- *             'class' => 'yii2tech\filedb\Connection',
+ *             '__class' => yii2tech\filedb\Connection::class,
  *             'path' => '@app/data/static',
  *         ]
  *     ],
@@ -101,7 +101,7 @@ class Connection extends Component
     public function getQueryProcessor()
     {
         if (!$this->isQueryProcessorInitialized) {
-            $this->_queryProcessor = Instance::ensure($this->_queryProcessor, QueryProcessor::className());
+            $this->_queryProcessor = Instance::ensure($this->_queryProcessor, QueryProcessor::class);
             $this->_queryProcessor->db = $this;
         }
         return $this->_queryProcessor;
@@ -119,7 +119,7 @@ class Connection extends Component
             }
             $config = $this->fileManagerMap[$this->format];
             if (!is_array($config)) {
-                $config = ['class' => $config];
+                $config = ['__class' => $config];
             }
             $this->_fileManager = Yii::createObject($config);
         }

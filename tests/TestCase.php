@@ -5,9 +5,6 @@ namespace yii2tech\tests\unit\filedb;
 use yii\helpers\ArrayHelper;
 use Yii;
 use yii\helpers\FileHelper;
-use yii2tech\tests\unit\activemail\data\Mailer;
-use yii2tech\tests\unit\activemail\data\TemplateStorage;
-use yii2tech\tests\unit\activemail\data\View;
 
 /**
  * Base class for the test cases.
@@ -37,7 +34,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
      * @param array $config The application configuration, if needed
      * @param string $appClass name of the application class to create
      */
-    protected function mockApplication($config = [], $appClass = '\yii\console\Application')
+    protected function mockApplication($config = [], $appClass = \yii\console\Application::class)
     {
         new $appClass(ArrayHelper::merge([
             'id' => 'testapp',

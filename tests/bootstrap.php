@@ -13,5 +13,3 @@ require_once(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 
 Yii::setAlias('@yii2tech/tests/unit/filedb', __DIR__);
 Yii::setAlias('@yii2tech/filedb', dirname(__DIR__) . '/src');
-
-require_once(__DIR__ . '/compatibility.php');
