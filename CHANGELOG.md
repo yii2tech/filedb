@@ -1,8 +1,8 @@
 Yii 2 File DB extension Change Log
 ==================================
 
-1.0.6 under development
------------------------
+1.0.6, April 9, 2018
+--------------------
 
 - Bug #10: Fixed `ActiveQuery::indexBy()` does not apply while using Yii 2.0.14 (klimov-paul)
 
