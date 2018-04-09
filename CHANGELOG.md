@@ -7,8 +7,8 @@ Yii 2 File DB extension Change Log
 - Chg: Required Yii framework version has been raised to '2.1.0' (klimov-paul)
 
 
-1.0.6 under development
------------------------
+1.0.6, April 9, 2018
+--------------------
 
 - Bug #10: Fixed `ActiveQuery::indexBy()` does not apply while using Yii 2.0.14 (klimov-paul)
 
