@@ -6,6 +6,7 @@ php:
   - 7.0
   - 7.1
   - 7.2
+  - 7.3
 
 # run build against hhvm but allow them to fail
 # http://docs.travis-ci.com/user/build-configuration/#Rows-That-are-Allowed-To-Fail
@@ -24,9 +25,10 @@ install:
   - travis_retry composer self-update && composer --version
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - travis_retry composer install --prefer-dist --no-interaction
+  - travis_retry composer require "phpunit/phpunit:4.8.27|^5.0|^6.0" --update-with-dependencies
 
 script:
-  - phpunit --verbose $PHPUNIT_FLAGS
+  - vendor/bin/phpunit --verbose $PHPUNIT_FLAGS
 
 after_script:
   - |
